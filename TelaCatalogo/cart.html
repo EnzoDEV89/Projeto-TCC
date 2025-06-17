@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #1b1b1b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cart-container {
+      max-width: 800px;
+      width: 100%;
+      padding: 20px;
+      background-color: rgba(41, 49, 59, 0.493);
+      border-radius: 10px;
+      margin-top: 50px;
+    }
+
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .cart-table th,
+    .cart-table td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .cart-table img {
+      width: 100px;
+      height: auto;
+    }
+
+    .checkout-section {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .checkout-btn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .checkout-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .remove-btn {
+      background-color: #ff4d4d;
+      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .remove-btn:hover {
+      background-color: #d43f3f;
+    }
+
+    .empty-cart {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+
+
+
+    
+    header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh; /* Ocupará a altura total da tela */
+  width: 200px; /* Largura do menu lateral */
+  background-color: #282828;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px; /* Espaço entre o topo e o conteúdo */
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-links li {
+  margin: 15px 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
+  padding: 10px;
+  transition: background-color 0.3s;
+  display: block;
+  text-align: center;
+}
+
+.nav-links a:hover {
+  background-color: #000000;
+  border-radius: 5px;
+}
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">GameStore</div>
+      <ul class="nav-links">
+        <li><a href="home.html">Início</a></li>
+        <li><a href="catalog.html">Jogos</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="cart.html">Carrinho</a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <div class="cart-container">
+    <h2>Seu Carrinho de Compras</h2>
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Imagem</th>
+          <th>Nome do Jogo</th>
+          <th>Plataformas</th>
+          <th>Preço</th>
+          <th>Remover</th>
+        </tr>
+      </thead>
+      <tbody id="cart-items">
+        <!-- Os itens do carrinho serão inseridos aqui -->
+      </tbody>
+    </table>
+
+    <div class="checkout-section">
+      <button class="checkout-btn">Finalizar Compra</button>
+    </div>
+    <div id="empty-cart-message" class="empty-cart" style="display:none;">
+      Seu carrinho está vazio.
+    </div>
+  </div>
+
+  <script>
+    // Função para carregar o item do Local Storage
+    function loadCartItem() {
+      const cartItem = JSON.parse(localStorage.getItem('cartItem'));
+
+      if (cartItem) {
+        const cartTable = document.getElementById('cart-items');
+        const cartRow = `
+          <tr>
+            <td><img src="${cartItem.image}" alt="${cartItem.name}"></td>
+            <td>${cartItem.name}</td>
+            <td>${cartItem.platforms}</td>
+            <td>R$${cartItem.price}</td>
+            <td><button class="remove-btn" onclick="removeFromCart()">Remover</button></td>
+          </tr>
+        `;
+        cartTable.innerHTML = cartRow;
+      } else {
+        document.getElementById('empty-cart-message').style.display = 'block';
+      }
+    }
+
+    // Função para remover o item do carrinho
+    function removeFromCart() {
+      // Remover o item do Local Storage
+      localStorage.removeItem('cartItem');
+
+      // Atualizar a tabela do carrinho para mostrar que está vazio
+      const cartTable = document.getElementById('cart-items');
+      cartTable.innerHTML = '';
+
+      // Exibir a mensagem de carrinho vazio
+      document.getElementById('empty-cart-message').style.display = 'block';
+    }
+
+    // Carregar o item do carrinho quando a página for carregada
+    window.onload = loadCartItem;
+  </script>
+</body>
+
+</html>
